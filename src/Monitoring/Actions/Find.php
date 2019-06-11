@@ -35,14 +35,6 @@ class Find extends AbstractAction implements ChainableInterface, EnginableInterf
     {
         parent::__construct($level);
 
-        // Вместо этого говна сделать EngineFactory
-        $this->entities = [
-            'string' => '\Bizprofi\Monitoring\Actions\FindEngines\Str',
-            'element' => '\Bizprofi\Monitoring\Actions\FindEngines\Element',
-            'elements' => '\Bizprofi\Monitoring\Actions\FindEngines\Elements',
-            'attribute' => '\Bizprofi\Monitoring\Actions\FindEngines\Attribute',
-        ];
-
         $this->initEngine($code, $identifier);
 
         // Возможно, нужно перенести в трайт Chainable
@@ -59,11 +51,7 @@ class Find extends AbstractAction implements ChainableInterface, EnginableInterf
     public function execute() : self
     {
         try {
-            // $this->getEngine()->setContext($this->context);
-            // var_dump('Trying to find needle '.$this->code.' '.$this->identifier.
-            // ' in context: '.$this->context);
             $findResult = $this->getEngine()->find($this->identifier);
-            // $this->getEngine()->clearCrawler();
             if ($findResult === false) {
                 throw new \OutOfBoundsException(
                     'Cannot find needle '.$this->code.' '.$this->identifier.

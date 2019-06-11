@@ -34,7 +34,6 @@ trait Chainable
     {
         $this->context = $context;
         if ($this instanceof EnginableInterface) {
-            // var_dump('Setting context for the engine');
             $this->getEngine()->setContext($context);
         }
 

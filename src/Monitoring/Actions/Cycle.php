@@ -9,8 +9,9 @@ use Bizprofi\Monitoring\Traits\Actions\Chainable;
 use Bizprofi\Monitoring\Actions\FindEngines\FindEngineFactory;
 use Bizprofi\Monitoring\Actions\ActionManager;
 use Bizprofi\Monitoring\Exceptions\{FatalActionException, WarningActionException};
+use Bizprofi\Monitoring\Interfaces\ChainableInterface;
 
-class Cycle extends AbstractAction
+class Cycle extends AbstractAction implements ChainableInterface
 {
     use Chainable;
 

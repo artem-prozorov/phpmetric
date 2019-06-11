@@ -3,6 +3,7 @@
 namespace Bizprofi\Monitoring\Traits\Actions;
 
 use Bizprofi\Monitoring\Interfaces\EngineInterface;
+use Bizprofi\Monitoring\Actions\FindEngines\FindEngineFactory;
 
 trait Enginable
 {
@@ -117,18 +118,20 @@ trait Enginable
             return $this->engine;
         }
 
-        if (empty($this->code) || empty($this->identifier)) {
+        if (empty($this->code) || empty($this->identifier) || empty($this->type)) {
             throw new \BadMethodCallException('Engine is not initialized');
         }
 
-        if (!array_key_exists($this->code, $this->entities)) {
-            throw new \InvalidArgumentException('Unknown action code');
-        }
+        // if (!array_key_exists($this->code, $this->entities)) {
+        //     throw new \InvalidArgumentException('Unknown action code');
+        // }
+
+        $engine = FindEngineFactory::getEngine($this->type, $this->code, $this->identifier, $this->context);
 
         // Вместо этого говна сделать EngineFactory
         // Вот сюда контекст передается всегда только 1 раз, даже в Cycle
         // Это косяк
-        $engine = new $this->entities[$this->code]($this->context);
+        // $engine = new $this->entities[$this->code]($this->context);
 
         $this->setEngine($engine);
 

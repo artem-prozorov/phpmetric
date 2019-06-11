@@ -2,21 +2,37 @@
 
 namespace Bizprofi\Monitoring\Actions\FindEngines;
 
+use Bizprofi\Monitoring\AbstractEngine;
+
 class FindEngineFactory
 {
     protected static $entities = [
-        'string' => '\Bizprofi\Monitoring\Actions\FindEngines\Str',
-        'element' => '\Bizprofi\Monitoring\Actions\FindEngines\Element',
-        'elements' => '\Bizprofi\Monitoring\Actions\FindEngines\Elements',
-        'attribute' => '\Bizprofi\Monitoring\Actions\FindEngines\Attribute',
+        'find' => [
+            'element' => '\Bizprofi\Monitoring\Actions\FindEngines\Element',
+            'elements' => '\Bizprofi\Monitoring\Actions\FindEngines\Elements',
+            'attribute' => '\Bizprofi\Monitoring\Actions\FindEngines\Attribute',
+            'string' => '\Bizprofi\Monitoring\Actions\FindEngines\Str',
+        ],
+        'request' => [
+            'url' => '\Bizprofi\Monitoring\Actions\RequestEngines\Url',
+        ],
     ];
 
-    public static function getEngine(string $code, string $identifier, $context)
+    /**
+     * getEngine
+     *
+     * @param string $type
+     * @param string $code
+     * @param string $identifier
+     * @param mixed $context
+     * @return AbstractEngine
+     */
+    public static function getEngine(string $type, string $code, string $identifier, $context)
     {
-        if (!array_key_exists($code, static::$entities)) {
-            throw new \InvalidArgumentException('Unknown action code');
+        if (!isset(static::$entities[$type][$code])) {
+            throw new \InvalidArgumentException('Unknown action type '.$type.' or code '.$code);
         }
 
-        return new static::$entities[$code]($context);
+        return new static::$entities[$type][$code]($context);
     }
 }

@@ -6,10 +6,18 @@ use Bizprofi\Monitoring\Traits\Actions\{Chainable, Enginable};
 use Bizprofi\Monitoring\Actions\AbstractAction;
 use Bizprofi\Monitoring\Actions\ActionResult;
 use Bizprofi\Monitoring\Logs\Error;
+use Bizprofi\Monitoring\Interfaces\{ChainableInterface, EnginableInterface};
 
-class Request extends AbstractAction
+class Request extends AbstractAction implements ChainableInterface, EnginableInterface
 {
     use Chainable, Enginable;
+
+    /**
+     * $type
+     *
+     * @var string
+     */
+    protected $type = 'request';
 
     public function __construct(string $code = null, string $identifier = null, $context = null, string $level = null)
     {
@@ -21,11 +29,6 @@ class Request extends AbstractAction
         }
 
         $this->initEngine($code, $identifier);
-
-        $this->entities = [
-            'url' => '\Bizprofi\Monitoring\Actions\RequestEngines\Url',
-            // 'status' => '\Bizprofi\Monitoring\Actions\RequestEngines\Status',
-        ];
     }
 
     /**
@@ -37,10 +40,6 @@ class Request extends AbstractAction
     {
         if (empty($this->identifier) && !$this->getContext()) {
             $this->identifier = $this->getContext();
-        }
-
-        if (!$this->engine) {
-            $this->initEngine($this->code, $this->identifier);
         }
 
         try {
