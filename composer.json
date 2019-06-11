@@ -1,0 +1,29 @@
+{
+    "name": "bizprofi/bitrix.monitoring",
+    "description": "Unit tests for Bitrix",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Artem Prozorov",
+            "email": "ag.prozorov@bizprofi.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/dom-crawler": "^4.2",
+        "symfony/css-selector": "^4.2",
+        "guzzlehttp/guzzle": "~6.0",
+        "paquettg/php-html-parser": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "files": [
+            "bootstrap.php"
+        ],
+        "psr-4": {
+            "Bizprofi\\Monitoring\\": "src/Monitoring/"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+Chaninable metrics (preset data)
+
+Config parser
+
+Metric
+request url 'http://localhost': 
+    fail if cant find string 'Welcome',
+    warning if cant find element 'h1',
+    warning if cant find elements 'img':
+        ???
+        warning if cant find attribute 'alt';
+    status is 200,
+    find link 'a.main-link':
+        leads to 'http://localhost'.
+
+    
+// Keyword "find" returns collection of objects or sets an error or a warning
+
+for every element - foreach result or context (method addChildLoopAction) 
+
+: passes result to the next metric if it's chainable
+, continues on to the next metric with the same result
+; closes the cycle and returns to the previous result
+. closes the chain or metric
+
+Придется использовать 2 разных HTML парсера. Тогда добавить Interfaces и Contracts
