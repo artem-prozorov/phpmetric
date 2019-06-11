@@ -20,9 +20,6 @@ class Find extends AbstractAction implements ChainableInterface, EnginableInterf
      */
     protected $type = "find";
 
-    // Возможно можно удалить
-    protected $search = false;
-
     /**
      * __construct
      *
