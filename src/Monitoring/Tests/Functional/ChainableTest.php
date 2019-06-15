@@ -19,13 +19,21 @@ class ChainableTest extends TestCase
         // $findAlt = new Find('attribute', 'alt');
         // $findAlt->warning();
 
+        $checkStatus = new Request('status');
+
+        $findHref = new Find('attribute', 'href');
+        $findHref->addChildAction($checkStatus);
+
         // $subAction = new Find('elements', 'img');
         // $subAction->addChildAction(new Cycle($findAlt))->warning();
 
-        // $request = new Request('url', 'https://fermerator.ru/lebosol/catalog');
-        // $request->addChildAction($subAction);
+        $subAction = new Find('elements', 'a');
+        $subAction->addChildAction(new Cycle($findHref))->warning();
 
-        // $request->execute();
+        $request = new Request('url', 'https://fermerator.ru/lebosol/catalog');
+        $request->addChildAction($subAction);
+
+        $request->execute();
 
         // var_dump($request->getResult()->getLogMessages());
 

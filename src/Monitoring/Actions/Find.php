@@ -34,7 +34,6 @@ class Find extends AbstractAction implements ChainableInterface, EnginableInterf
 
         $this->initEngine($code, $identifier);
 
-        // Возможно, нужно перенести в трайт Chainable
         if (!empty($context)) {
             $this->setContext($context);
         }

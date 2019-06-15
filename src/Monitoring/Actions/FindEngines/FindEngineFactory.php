@@ -15,6 +15,7 @@ class FindEngineFactory
         ],
         'request' => [
             'url' => '\Bizprofi\Monitoring\Actions\RequestEngines\Url',
+            'status' => '\Bizprofi\Monitoring\Actions\RequestEngines\Status',
         ],
     ];
 

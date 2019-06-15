@@ -15,11 +15,16 @@ trait Enginable
     protected $identifier = false;
 
     /**
-     * $entities
-     *
-     * @var array
+     * DEPRECATED!!!
      */
     protected $entities = [];
+
+    /**
+     * $code
+     *
+     * @var string
+     */
+    protected $code;
 
     /**
      * $engine (mainly for the testing purposes)
@@ -118,8 +123,16 @@ trait Enginable
             return $this->engine;
         }
 
-        if (empty($this->code) || empty($this->identifier) || empty($this->type)) {
-            throw new \BadMethodCallException('Engine is not initialized');
+        if (empty($this->code)) {
+            throw new \BadMethodCallException('Engine is not initialized: empty code: '.$this->code);
+        }
+
+        // if (empty($this->identifier)) {
+        //     throw new \BadMethodCallException('Engine is not initialized: empty identifier');
+        // }
+
+        if (empty($this->type)) {
+            throw new \BadMethodCallException('Engine is not initialized: empty type');
         }
 
         // if (!array_key_exists($this->code, $this->entities)) {

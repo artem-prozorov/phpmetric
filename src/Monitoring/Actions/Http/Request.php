@@ -23,12 +23,11 @@ class Request extends AbstractAction implements ChainableInterface, EnginableInt
     {
         parent::__construct($level);
 
-        // Перенести в трайт Chainable
+        $this->initEngine($code, $identifier);
+
         if (!empty($context)) {
             $this->setContext($context);
         }
-
-        $this->initEngine($code, $identifier);
     }
 
     /**
@@ -38,7 +37,11 @@ class Request extends AbstractAction implements ChainableInterface, EnginableInt
      */
     public function execute() : self
     {
-        if (empty($this->identifier) && !$this->getContext()) {
+        // if (empty($this->identifier) && $this->getContext()) {
+        //     $this->identifier = $this->getContext();
+        // }
+
+        if ($this->getContext()) {
             $this->identifier = $this->getContext();
         }
 

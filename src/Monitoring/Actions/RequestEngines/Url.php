@@ -13,7 +13,7 @@ class Url extends AbstractEngine
 
     public function __construct()
     {
-        // $this->initClient();
+
     }
 
     public function find($needle)
@@ -25,14 +25,4 @@ class Url extends AbstractEngine
     {
         
     }
-
-    // public function setClient($client)
-    // {
-    //     $this->client = $client;
-    // }
-
-    // public function getClient()
-    // {
-    //     return $this->client;
-    // }
 }

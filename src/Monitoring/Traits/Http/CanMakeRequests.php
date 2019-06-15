@@ -48,6 +48,10 @@ trait CanMakeRequests
 
     public function getClient()
     {
+        if ($this->client === false) {
+            $this->initClient();
+        }
+
         return $this->client;
     }
 
@@ -100,11 +104,7 @@ trait CanMakeRequests
      */
     public function makeRequest(string $url) : self
     {
-        if (!$this->client) {
-            $this->initClient();
-        }
-
-        $response = $this->client->request($this->method, $url, $this->params);
+        $response = $this->getClient()->request($this->method, $url, $this->params);
         switch ($response->getStatusCode()) {
             case 200:
                 break;

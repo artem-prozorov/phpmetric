@@ -52,7 +52,7 @@ HTML;
             var_dump($e->getMessage());
         }
 
-        var_dump($action->getResult()->getLogMessages());
+        // var_dump($action->getResult()->getLogMessages());
 
         $this->assertTrue($action->getResult()->isSuccess());
     }
