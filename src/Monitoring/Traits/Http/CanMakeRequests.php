@@ -3,6 +3,8 @@
 namespace Bizprofi\Monitoring\Traits\Http;
 
 use Bizprofi\Monitoring\Result;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 
 trait CanMakeRequests
 {
@@ -32,13 +34,13 @@ trait CanMakeRequests
     /**
      * initClient
      *
-     * @param mixed $httpClient
+     * @param ClientInterface $httpClient
      * @return self
      */
-    public function initClient($httpClient = null) : self
+    public function initClient(ClientInterface $httpClient = null) : self
     {
         if (empty($httpClient)) {
-            $this->client = new \GuzzleHttp\Client();
+            $this->client = new Client();
         } else {
             $this->client = $httpClient;
         }

@@ -37,10 +37,6 @@ class Request extends AbstractAction implements ChainableInterface, EnginableInt
      */
     public function execute() : self
     {
-        // if (empty($this->identifier) && $this->getContext()) {
-        //     $this->identifier = $this->getContext();
-        // }
-
         if ($this->getContext()) {
             $this->identifier = $this->getContext();
         }
@@ -61,18 +57,18 @@ class Request extends AbstractAction implements ChainableInterface, EnginableInt
      *
      * @return array
      */
-    public function jsonSerialize(): array
-    {
-        $data = parent::jsonSerialize();
+    // public function jsonSerialize(): array
+    // {
+    //     $data = parent::jsonSerialize();
 
-        $data['action']['code'] = $this->code;
-        $data['action']['identifier'] = $this->url;
-        $data['action']['context'] = $this->params;
-        $data['action']['level'] = $this->level;
-        $data['action']['childActions'] = $this->childActions;
+    //     $data['action']['code'] = $this->code;
+    //     $data['action']['identifier'] = $this->identifier;
+    //     $data['action']['context'] = $this->context;
+    //     $data['action']['level'] = $this->level;
+    //     $data['action']['childActions'] = $this->childActions;
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
     /**
      * createFromArray

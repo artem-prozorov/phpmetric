@@ -20,12 +20,12 @@ class FindJsonEncodeTest extends TestCase
         $action->setIdentifier($identifier);
         $action->setContext($context);
 
-        $json = '{"type":"find","action":{"level":"F","chainable":true,"code":"string","identifier":"monitoring","context":"Universal monitoring system","childActions":false}}';
+        $json = '{"type":"find","negated":false,"action":{"level":"F","chainable":true,"code":"string","identifier":"monitoring","context":"Universal monitoring system","childActions":false}}';
         
         $this->assertEquals(json_encode($action), $json);
         
         $action->setLevel('W');
-        $json = '{"type":"find","action":{"level":"W","chainable":true,"code":"string","identifier":"monitoring","context":"Universal monitoring system","childActions":false}}';
+        $json = '{"type":"find","negated":false,"action":{"level":"W","chainable":true,"code":"string","identifier":"monitoring","context":"Universal monitoring system","childActions":false}}';
         $this->assertEquals(json_encode($action), $json);
     }
 

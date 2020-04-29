@@ -5,6 +5,7 @@ namespace Bizprofi\Monitoring\Traits\Actions;
 use Bizprofi\Monitoring\Actions\AbstractAction;
 use Bizprofi\Monitoring\Collections\ActionCollection;
 use Bizprofi\Monitoring\Interfaces\EnginableInterface;
+use Bizprofi\Monitoring\Actions\Context\{ModifierCollection, ModifierInterface};
 
 trait Chainable
 {
@@ -13,6 +14,8 @@ trait Chainable
     protected $context = false;
 
     protected $childActions = false;
+
+    protected $contextModifiers = false;
 
     /**
      * isChainable
@@ -32,6 +35,10 @@ trait Chainable
      */
     public function setContext($context)
     {
+        if ($this->contextModifiers !== false) {
+            $context = $this->contextModifiers->apply($context);
+        }
+
         $this->context = $context;
         if ($this instanceof EnginableInterface) {
             $this->getEngine()->setContext($context);
@@ -82,5 +89,32 @@ trait Chainable
         $this->childActions->setParentAction($this);
     }
 
-    // public function addChildLoopAction()
+    /**
+     * addContextModifier.
+     *
+     * @access	public
+     * @param	modifierinterface	$modifier	
+     * @return	self
+     */
+    public function addContextModifier(ModifierInterface $modifier)
+    {
+        if ($this->contextModifiers === false) {
+            $this->contextModifiers = new ModifierCollection();
+        }
+
+        $this->contextModifiers->push($modifier);
+
+        return $this;
+    }
+
+    /**
+     * getContextModifiers.
+     *
+     * @access	public
+     * @return	mixed
+     */
+    public function getContextModifiers()
+    {
+        return $this->contextModifiers;
+    }
 }

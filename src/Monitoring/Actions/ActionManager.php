@@ -13,8 +13,9 @@ class ActionManager
      */
     public static function getActions(): array
     {
+        // Кажется это уже не используется
         return [
-            'Request' => '\Bizprofi\Monitoring\Actions\Http\Request',
+            'request' => '\Bizprofi\Monitoring\Actions\Http\Request',
             'find' => '\Bizprofi\Monitoring\Actions\Find',
             'cycle' => '\Bizprofi\Monitoring\Actions\Cycle',
         ];
@@ -29,7 +30,7 @@ class ActionManager
     public static function getAction(string $type): string
     {
         if (!array_key_exists($type, static::getActions())) {
-            throw new \InvalidArgumentException('Unknown action type');
+            throw new \InvalidArgumentException('Unknown action type "'.$type.'"');
         }
 
         return static::getActions()[$type];
@@ -67,6 +68,14 @@ class ActionManager
             }
         }
 
+        if (array_key_exists('contextModifiers', $rawAction['action']) && is_array($rawAction['action']['contextModifiers'])) {
+            foreach ($rawAction['action']['contextModifiers']['modifiers'] as $rawModifier) {
+                echo 'Modifier: '.$rawModifier['type']."\n";
+                $modifier = new $rawModifier['type']($rawModifier['data']);
+                $action->addContextModifier($modifier);
+            }
+        }
+
         return $action;
     }
 
@@ -79,6 +88,7 @@ class ActionManager
     public static function wakeUpFromJson(string $json): AbstractAction
     {
         $rawAction = json_decode($json, true);
+
         if ($rawAction === false) {
             throw new \InvalidArgumentException('Cannot wake action up');
         }

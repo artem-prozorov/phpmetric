@@ -8,6 +8,8 @@ use Bizprofi\Monitoring\Logs\{Info, Error};
 use Bizprofi\Monitoring\Traits\Actions\{Chainable, Enginable};
 use Bizprofi\Monitoring\Actions\FindEngines\FindEngineFactory;
 use Bizprofi\Monitoring\Interfaces\{ChainableInterface, EnginableInterface};
+use Bizprofi\Monitoring\Exceptions\FindException;
+use Bizprofi\Monitoring\Language\Language;
 
 class Find extends AbstractAction implements ChainableInterface, EnginableInterface
 {
@@ -46,23 +48,23 @@ class Find extends AbstractAction implements ChainableInterface, EnginableInterf
      */
     public function execute() : self
     {
+        Language::setLocale('Ru');
+        Language::loadFile('find_action');
+
         try {
             $findResult = $this->getEngine()->find($this->identifier);
-            if ($findResult === false) {
-                throw new \OutOfBoundsException(
-                    'Cannot find needle '.$this->code.' '.$this->identifier.
-                    ' in context: '.$this->context
-                );
+            $langParams = ['CODE' => $this->code, 'IDENTIFIER' => $this->identifier, 'CONTEXT' => $this->context];
+            if ($findResult === $this->negated) {
+                $message = Language::get($this->negated ? 'NEGATED_NEEDLE_FOUND' : 'CANNOT_FIND_NEEDLE', $langParams);
+                throw new FindException($message);
             }
 
             $this->result->setData($findResult);
-            $this->result->addLog(new Info(
-                'Needle '.$this->code.' '.$this->identifier.
-                ' FOUND in context: '.$this->context
-            ));
+            $message = Language::get('NEEDLE_FOUND', $langParams);
+            $this->result->addLog(new Info(Language::get('NEEDLE_FOUND', $langParams)));
 
             $this->executeChild();
-        } catch (\OutOfBoundsException $e) {
+        } catch (FindException $e) {
             $this->fail($e);
         }
 
@@ -95,6 +97,9 @@ class Find extends AbstractAction implements ChainableInterface, EnginableInterf
     {
         $action = new Find($data['code'], $data['identifier'], $data['context']);
         $action->setLevel($data['level']);
+        if (isset($data['negated']) && $data['negated'] === true) {
+            $action->negate();
+        }
 
         return $action;
     }

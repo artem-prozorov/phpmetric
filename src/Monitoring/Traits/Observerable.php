@@ -2,10 +2,13 @@
 
 namespace Bizprofi\Monitoring\Traits;
 
+use SplObserver;
+use SplObjectStorage;
+
 trait Observerable
 {
     /**
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
     private $observers;
 
@@ -16,16 +19,16 @@ trait Observerable
      */
     public function initObservers()
     {
-        $this->observers = new \SplObjectStorage();
+        $this->observers = new SplObjectStorage();
     }
 
     /**
      * attach
      *
-     * @param \SplObserver $observer
+     * @param SplObserver $observer
      * @return void
      */
-    public function attach(\SplObserver $observer)
+    public function attach(SplObserver $observer)
     {
         $this->observers->attach($observer);
     }
@@ -33,17 +36,17 @@ trait Observerable
     /**
      * detach
      *
-     * @param \SplObserver $observer
+     * @param SplObserver $observer
      * @return void
      */
-    public function detach(\SplObserver $observer)
+    public function detach(SplObserver $observer)
     {
         $this->observers->detach($observer);
     }
 
     public function notify()
     {
-        /** @var \SplObserver $observer */
+        /** @var SplObserver $observer */
         foreach ($this->observers as $observer) {
             $observer->update($this);
         }

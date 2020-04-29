@@ -33,15 +33,12 @@ class Status extends AbstractEngine
             $url = $this->context;
         }
 
-        var_dump($url);
-
         try {
             $response = $this->getClient()->request($this->method, $url, $this->params);
-
             $this->response = $response->getStatusCode();
         } catch (\Exception $e) {
             // var_dump($e->getMessage());
-            var_dump('fail loading url: '.$url);
+            // var_dump('fail loading url: '.$url);
         }
 
         return $this;

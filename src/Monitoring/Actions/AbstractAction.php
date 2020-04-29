@@ -4,9 +4,8 @@ namespace Bizprofi\Monitoring\Actions;
 
 use Bizprofi\Monitoring\Interfaces\Actions\ActionInterface;
 use Bizprofi\Monitoring\Logs\{Error, Warning};
-use Bizprofi\Monitoring\Exceptions\ActionException;
-use \Bizprofi\Monitoring\Exceptions\FatalActionException;
-use \Bizprofi\Monitoring\Exceptions\WarningActionException;
+use Bizprofi\Monitoring\Exceptions\{ActionException, FatalActionException, WarningActionException};
+use Bizprofi\Monitoring\Interfaces\{ChainableInterface, EnginableInterface};
 
 abstract class AbstractAction implements ActionInterface
 {
@@ -36,6 +35,11 @@ abstract class AbstractAction implements ActionInterface
     protected $level;
 
     /**
+     * @var		bool	$negated
+     */
+    protected $negated = false;
+
+    /**
      * __construct
      *
      * @return void
@@ -57,19 +61,51 @@ abstract class AbstractAction implements ActionInterface
     }
 
     /**
+     * negate.
+     *
+     * @author	Unknown
+     * @since	v0.0.1
+     * @version	v1.0.0	Saturday, June 22nd, 2019.
+     * @access	public
+     * @return	self
+     */
+    public function negate(): AbstractAction
+    {
+        $this->negated = true;
+
+        return $this;
+    }
+
+    /**
      * jsonSerialize
      *
      * @return array
      */
     public function jsonSerialize(): array
     {
-        return [
+        $data = [
             'type' => $this->type,
+            'negated' => $this->negated,
             'action' => [
                 'level' => $this->level,
                 'chainable' => $this->isChainable(),
             ]
         ];
+
+        if ($this instanceof EnginableInterface) {
+            $data['action']['code'] = $this->code;
+            $data['action']['identifier'] = $this->identifier;
+            $data['action']['context'] = $this->context;
+        }
+
+        if ($this instanceof ChainableInterface) {
+            $data['action']['childActions'] = $this->childActions;
+            if ($this->contextModifiers !== false) {
+                $data['action']['contextModifiers'] = $this->contextModifiers;
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -96,7 +132,7 @@ abstract class AbstractAction implements ActionInterface
      * @param string $level
      * @return self
      */
-    public function setLevel(string $level): self
+    public function setLevel(string $level): AbstractAction
     {
         if (!in_array($level, static::getLevels(), true)) {
             throw new \InvalidArgumentException('Invalid level');
@@ -112,7 +148,7 @@ abstract class AbstractAction implements ActionInterface
      *
      * @return self
      */
-    public function warning(): self
+    public function warning(): AbstractAction
     {
         return $this->setLevel(static::WARNING);
     }

@@ -15,11 +15,6 @@ trait Enginable
     protected $identifier = false;
 
     /**
-     * DEPRECATED!!!
-     */
-    protected $entities = [];
-
-    /**
      * $code
      *
      * @var string
@@ -135,16 +130,7 @@ trait Enginable
             throw new \BadMethodCallException('Engine is not initialized: empty type');
         }
 
-        // if (!array_key_exists($this->code, $this->entities)) {
-        //     throw new \InvalidArgumentException('Unknown action code');
-        // }
-
         $engine = FindEngineFactory::getEngine($this->type, $this->code, $this->identifier, $this->context);
-
-        // Вместо этого говна сделать EngineFactory
-        // Вот сюда контекст передается всегда только 1 раз, даже в Cycle
-        // Это косяк
-        // $engine = new $this->entities[$this->code]($this->context);
 
         $this->setEngine($engine);
 

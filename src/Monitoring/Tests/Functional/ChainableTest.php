@@ -9,35 +9,41 @@ use Bizprofi\Monitoring\Actions\{Find, Cycle};
 use Bizprofi\Monitoring\Actions\ActionResult;
 use Bizprofi\Monitoring\Exceptions\FatalActionException;
 use Bizprofi\Monitoring\Exceptions\WarningActionException;
+use Bizprofi\Monitoring\Actions\Context\Modifiers\Url;
 
 class ChainableTest extends TestCase
 {
     public function testRequestAndFind()
     {
+        $this->markTestIncomplete('Тест в работе');
+
         // $this->assertTrue(true);
 
         // $findAlt = new Find('attribute', 'alt');
         // $findAlt->warning();
 
-        $checkStatus = new Request('status');
+        // $checkStatus = new Request('status');
+        // $checkStatus->addContextModifier(new Url('https://fermerator.ru'));
 
-        $findHref = new Find('attribute', 'href');
-        $findHref->addChildAction($checkStatus);
+        // $findHref = new Find('attribute', 'href');
+        // $findHref->addChildAction($checkStatus);
 
         // $subAction = new Find('elements', 'img');
         // $subAction->addChildAction(new Cycle($findAlt))->warning();
 
-        $subAction = new Find('elements', 'a');
-        $subAction->addChildAction(new Cycle($findHref))->warning();
+        // $subAction = new Find('elements', 'a');
+        // $subAction->addChildAction(new Cycle($findHref))->warning();
 
-        $request = new Request('url', 'https://fermerator.ru/lebosol/catalog');
-        $request->addChildAction($subAction);
+        // $request = new Request('url', 'https://fermerator.ru/lebosol/catalog');
+        // $request->addChildAction($subAction);
 
-        $request->execute();
+        // echo json_encode($request);
+
+        // $request->execute();
 
         // var_dump($request->getResult()->getLogMessages());
 
-        $this->assertTrue(true);
+        // $this->assertTrue(true);
 
         //////////////////////////////////
 
