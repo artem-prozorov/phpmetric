@@ -30,7 +30,8 @@
             "bootstrap.php"
         ],
         "psr-4": {
-            "Bizprofi\\Monitoring\\": "src/Monitoring/"
+            "PhpMetric\\": "src/",
+            "PhpMetric\\Tests\\": "tests/"
         }
     },
     "scripts": {
