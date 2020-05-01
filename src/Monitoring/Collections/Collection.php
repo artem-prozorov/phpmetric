@@ -2,18 +2,13 @@
 
 namespace Bizprofi\Monitoring\Collections;
 
-class Collection extends \SplQueue implements \JsonSerializable
+use SplQueue;
+use Bizprofi\Monitoring\Interfaces\Arrayable as ArrayableInterface;
+use Bizprofi\Monitoring\Traits\Arrayable;
+
+class Collection extends SplQueue implements ArrayableInterface
 {
-    /**
-     * jsonSerialize.
-     *
-     * @access	public
-     * @return	array
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
+    use Arrayable;
 
     /**
      * toArray.
@@ -24,10 +19,23 @@ class Collection extends \SplQueue implements \JsonSerializable
     public function toArray(): array
     {
         $data = [];
+
         foreach ($this as $item) {
-            $data[] = $item;
+            $data[] = $this->itemToArray($item);
         }
 
         return $data;
+    }
+
+    /**
+     * itemToArray.
+     *
+     * @access	protected
+     * @param	mixed	$item	
+     * @return	mixed
+     */
+    protected function itemToArray($item)
+    {
+        return $item;
     }
 }

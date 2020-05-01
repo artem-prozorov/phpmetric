@@ -2,16 +2,21 @@
 
 namespace Bizprofi\Monitoring\Logs;
 
-class Log
+use Bizprofi\Monitoring\Interfaces\Arrayable as ArrayableInterface;
+use Bizprofi\Monitoring\Traits\Arrayable;
+
+class Log implements ArrayableInterface
 {
-    const TYPE = 'LOG';
+    use Arrayable;
+
+    public const TYPE = 'LOG';
 
     /**
      * $message
      *
-     * @var string
+     * @var string $message
      */
-    protected $message;
+    protected string $message;
 
     public function __construct(string $message = null)
     {
@@ -37,7 +42,7 @@ class Log
      */
     public function __toString() : string
     {
-        return $this->getType().': '.$this->message;
+        return $this->getType() . ': '.$this->message;
     }
 
     /**
@@ -48,5 +53,16 @@ class Log
     public function getType()
     {
         return static::TYPE;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return [
+            'type' => $this->getType(),
+            'message' => $this->getMessage(),
+        ];
     }
 }

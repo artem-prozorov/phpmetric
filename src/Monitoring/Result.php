@@ -4,9 +4,13 @@ namespace Bizprofi\Monitoring;
 
 use Bizprofi\Monitoring\Logs\{Log, Error};
 use Bizprofi\Monitoring\Collections\LogCollection;
+use Bizprofi\Monitoring\Interfaces\Arrayable as ArrayableInterface;
+use Bizprofi\Monitoring\Traits\Arrayable;
 
-class Result
+class Result implements ArrayableInterface
 {
+    use Arrayable;
+
     /**
      * $data
      *
@@ -140,5 +144,16 @@ class Result
         $this->logs = new LogCollection();
         
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return [
+            'success' => $this->isSuccess(),
+            'logs' => $this->getLogs()->toArray(),
+        ];
     }
 }

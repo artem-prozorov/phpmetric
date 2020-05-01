@@ -4,6 +4,12 @@ namespace Bizprofi\Monitoring\Collections;
 
 class LogCollection extends Collection
 {
+    /**
+     * getLogMessages.
+     *
+     * @access	public
+     * @return	array
+     */
     public function getLogMessages(): array
     {
         $messages = [];
@@ -12,5 +18,13 @@ class LogCollection extends Collection
         }
 
         return $messages;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function itemToArray($item)
+    {
+        return $item->toArray();
     }
 }
